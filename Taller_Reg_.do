@@ -167,14 +167,14 @@ mdesc
 ******************************
 ***PUNTO 2
 
-gen prop1=prop
+
 
 
 * correr las siguientes regresiones
 
 * a) regresion simple de variable dependiente contra independiente principal
 
-reg prop1 Corrupt
+reg prop Corrupt
 *no sale significativa la variable Corrupt 
 
 
@@ -198,7 +198,7 @@ reg prop1 Corrupt
 *Para la variable PartidoDesf, se convertirá a numérica 
 egen nPartidoDesf= group(PartidoDesf)
 
-reg prop1 Corrupt nPartidoDesf Auditada CorruptPast HOMI_CAP_MUN log_total2 MismoPartidoG 
+reg prop Corrupt nPartidoDesf Auditada CorruptPast HOMI_CAP_MUN log_total2 MismoPartidoG 
 * nota: esta regresion no esta corriendo no estoy segura por que, revisar
 * ademas: no se si esta bien especificada, tengo dudas sobre como se incluye el tiempo y el municipio
 
