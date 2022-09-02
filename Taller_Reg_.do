@@ -13,7 +13,8 @@
 ******************************
 * establecer directorio y ruta  ** varia de acuerdo al pc de cada quien
 
-cd "C:\Users\Camila Cely\Documents\GitHub\Taller_Regresiones"
+*cd "C:\Users\Camila Cely\Documents\GitHub\Taller_Regresiones"
+cd "E:\MAESTRIA UNIANDES\EVALUACION DE IMPACTO\Taller_Regresiones"
 use "corruption.dta"
 
 br
@@ -106,7 +107,7 @@ sum log_total
    notamos que se reducen las observaciones si dejamos los ceros tal cual, porque el logaritmo de cero se vuelve missing value*/
    
    
-*voy a duplicarla y reemplazarle los valores de cero para que no se generen los missing values en la variable de logaritmo
+*Vamos a duplicarla y reemplazarle los valores de cero para que no se generen los missing values en la variable de logaritmo
 
 gen total2 = total
 sum total2
@@ -166,11 +167,14 @@ mdesc
 ******************************
 ***PUNTO 2
 
+gen prop1=prop
+
+
 * correr las siguientes regresiones
 
 * a) regresion simple de variable dependiente contra independiente principal
 
-reg prop Corrupt
+reg prop1 Corrupt
 *no sale significativa la variable Corrupt 
 
 
@@ -191,11 +195,37 @@ reg prop Corrupt
 
 * b) regresion simple de variable dependiente contra independiente principal + controles
 
-reg prop Corrupt PartidoDesf Auditada CorruptPast HOMI_CAP_MUN log_total2 MismoPartidoG 
+*Para la variable PartidoDesf, se convertirá a numérica 
+egen nPartidoDesf= group(PartidoDesf)
+
+reg prop1 Corrupt nPartidoDesf Auditada CorruptPast HOMI_CAP_MUN log_total2 MismoPartidoG 
 * nota: esta regresion no esta corriendo no estoy segura por que, revisar
 * ademas: no se si esta bien especificada, tengo dudas sobre como se incluye el tiempo y el municipio
 
+/*Source |       SS           df       MS      Number of obs   =   102,133
+-------------+----------------------------------   F(7, 102125)    =     97.82
+       Model |  10.7293994         7  1.53277134   Prob > F        =    0.0000
+    Residual |  1600.25918   102,125  .015669613   R-squared       =    0.0067
+-------------+----------------------------------   Adj R-squared   =    0.0066
+       Total |  1610.98858   102,132  .015773593   Root MSE        =    .12518
 
+-------------------------------------------------------------------------------
+        prop1 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+      Corrupt |   .0007935   .0013804     0.57   0.565     -.001912    .0034991
+ nPartidoDesf |   .0003293   .0000179    18.44   0.000     .0002943    .0003643
+     Auditada |   .0010582   .0010766     0.98   0.326    -.0010519    .0031683
+  CorruptPast |  -.0049382   .0008118    -6.08   0.000    -.0065294    -.003347
+ HOMI_CAP_MUN |   4.195555   1.211255     3.46   0.001     1.821511    6.569599
+   log_total2 |   -.000952   .0000945   -10.08   0.000    -.0011371   -.0007668
+MismoPartidoG |  -.0117006   .0008472   -13.81   0.000     -.013361   -.0100402
+        _cons |   .0480061   .0020287    23.66   0.000     .0440298    .0519824
+-------------------------------------------------------------------------------
+*/
+
+
+ssc install ftools
+ssc install reghdfe /*Para instalar paquete de stata*/
 
 * c) regresion simple de variable dependiente contra independiente principal + efectos fijos
 
@@ -324,5 +354,37 @@ Absorbed degrees of freedom:
 
 * d) regresion simple de variable dependiente contra independiente principal + controles + efectos fijos
 
-reghdfe prop Corrupt PartidoDesf Auditada CorruptPast HOMI_CAP_MUN log_total2 MismoPartidoG , absorb (clavedelaescuela GradoSecundaria year)
-*esta regresion no corre porque hay que hacerle destring a la variable de PartidoDesf, pero no me esta dejando, pendiente revisar 
+reghdfe prop Corrupt nPartidoDesf Auditada CorruptPast HOMI_CAP_MUN log_total2 MismoPartidoG , absorb (clavedelaescuela GradoSecundaria year)
+/*HDFE Linear regression                            Number of obs   =    100,356
+Absorbing 3 HDFE groups                           F(   7,  81656) =       6.76
+                                                  Prob > F        =     0.0000
+                                                  R-squared       =     0.3634
+                                                  Adj R-squared   =     0.2176
+                                                  Within R-sq.    =     0.0006
+                                                  Root MSE        =     0.1107
+
+-------------------------------------------------------------------------------
+         prop | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+      Corrupt |   .0047463   .0015121     3.14   0.002     .0017826    .0077101
+ nPartidoDesf |   .0000977   .0000253     3.86   0.000     .0000481    .0001473
+     Auditada |  -.0016889   .0011823    -1.43   0.153    -.0040061    .0006284
+  CorruptPast |  -.0033646   .0016269    -2.07   0.039    -.0065532   -.0001759
+ HOMI_CAP_MUN |  -3.506931   2.309111    -1.52   0.129    -8.032773    1.018911
+   log_total2 |  -.0001694   .0001384    -1.22   0.221    -.0004406    .0001019
+MismoPartidoG |   .0021732   .0011155     1.95   0.051    -.0000133    .0043596
+        _cons |   .0410487   .0030561    13.43   0.000     .0350588    .0470386
+-------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+----------------------------------------------------------+
+      Absorbed FE | Categories  - Redundant  = Num. Coefs |
+------------------+---------------------------------------|
+ clavedelaescuela |     18684           0       18684     |
+  GradoSecundaria |         3           1           2     |
+             year |         8           1           7    ?|
+----------------------------------------------------------+
+? = number of redundant parameters may be higher
+
+*/
+
