@@ -13,8 +13,12 @@
 ******************************
 * establecer directorio y ruta  ** varia de acuerdo al pc de cada quien
 
-cd "C:\Users\Camila Cely\Documents\GitHub\Taller_Regresiones"
-*cd "E:\MAESTRIA UNIANDES\EVALUACION DE IMPACTO\Taller_Regresiones"
+*cd "C:\Users\Camila Cely\Documents\GitHub\Taller_Regresiones"
+
+ssc install ftools
+ssc install reghdfe /*Para instalar paquetes de stata*/
+
+cd "E:\MAESTRIA UNIANDES\EVALUACION DE IMPACTO\Taller_Regresiones"
 use "corruption.dta"
 
 br
@@ -172,6 +176,7 @@ mdesc
 * a) regresion simple de variable dependiente contra independiente principal
 
 reg prop Corrupt
+outreg2  using myreg3.doc, replace ctitle((a)) keep (Corrupt) nocons 
 *no sale significativa la variable Corrupt 
 
 
@@ -199,7 +204,7 @@ sum PartidoDesf
 sum nPartidoDesf
 
 reg prop Corrupt i.nPartidoDesf Auditada CorruptPast HOMI_CAP_MUN log_total2 MismoPartidoG /* aqui le puse i.nPartidoDesf porque si no, no la toma como categorica sino como numerica*/ 
-
+outreg2  using myreg3.doc, append ctitle((b)) keep (Corrupt) nocons 
 /* REGRESION CON nPartidoDesf como numerica
 
 Source |       SS           df       MS      Number of obs   =   102,133
@@ -327,8 +332,6 @@ MismoPartidoG |  -.0003297   .0012785    -0.26   0.796    -.0028356    .0021762
         _cons |   .0522809   .0117372     4.45   0.000      .029276    .0752857
 ------------------------------------------------------------------------------- */
 
-ssc install ftools
-ssc install reghdfe /*Para instalar paquetes de stata*/
 
 * c) regresion simple de variable dependiente contra independiente principal + efectos fijos
 
@@ -336,6 +339,7 @@ ssc install reghdfe /*Para instalar paquetes de stata*/
 
 **efectos fijos por escuela
 reghdfe prop Corrupt , absorb (clavedelaescuela)
+ 
 *observamos que cuando se ponen efectos fijos por escuela, ahi si empezamos a ver significancia en la variable explicativa de interes
 
 /*(dropped 1777 singleton observations)
@@ -395,6 +399,7 @@ Absorbed degrees of freedom:
 
 **efectos fijos por año (tiempo)
 reghdfe prop Corrupt , absorb (year)
+
 *observamos que con efectos fijos de año unicamente, tampoco se obtiene significancia
 
 /*(MWFE estimator converged in 1 iterations)
@@ -424,7 +429,7 @@ Absorbed degrees of freedom:
 
 *** ahora sacamos la regresion con los tres efectos fijos ******* COMPLETA
 reghdfe prop Corrupt , absorb (clavedelaescuela GradoSecundaria year)
-
+outreg2  using myreg3.doc, append ctitle((c)) keep (Corrupt) nocons 
 *observamos que hay significancia y que el coeficiente es ligeramente menor que cuando solo se usan efectos fijos de clave de la escuela, por lo cual los otros efectos fijos si pueden estar ayudando a hallar un estimador menos sesgado
 *en general vemos que aqui el coeficiente es positivo, significativo, pero su magnitud creo que es baja (0.004)
 
@@ -580,6 +585,7 @@ Absorbed degrees of freedom:
 * AHORA: veamos como quedaria sacandole el efecto fijo de GradoSecundaria y metiendola como variable categorica
 
 reghdfe prop Corrupt i.nPartidoDesf Auditada CorruptPast HOMI_CAP_MUN log_total2 MismoPartidoG i.GradoSecundaria, absorb (clavedelaescuela year)
+outreg2  using myreg3.doc, append ctitle((d)) keep (Corrupt) nocons 
 
 /* regresion completa version 2, vemos que da exactamente igual el coeficiente de corrupt
 HDFE Linear regression                            Number of obs   =    100,356
