@@ -204,7 +204,7 @@ sum PartidoDesf
 sum nPartidoDesf
 
 reg prop Corrupt i.nPartidoDesf Auditada CorruptPast HOMI_CAP_MUN log_total2 MismoPartidoG /* aqui le puse i.nPartidoDesf porque si no, no la toma como categorica sino como numerica*/ 
-outreg2  using myreg3.doc, append ctitle((b)) keep (Corrupt) nocons 
+outreg2  using myreg3.doc, append ctitle((b)) keep (Corrupt) nocons addtext(Partido, YES, Auditado?, YES, Corrupt_past, YES, Homicidio, YES, Ingreso_total, YES, Mismo_Partido, YES)
 /* REGRESION CON nPartidoDesf como numerica
 
 Source |       SS           df       MS      Number of obs   =   102,133
@@ -429,7 +429,8 @@ Absorbed degrees of freedom:
 
 *** ahora sacamos la regresion con los tres efectos fijos ******* COMPLETA
 reghdfe prop Corrupt , absorb (clavedelaescuela GradoSecundaria year)
-outreg2  using myreg3.doc, append ctitle((c)) keep (Corrupt) nocons 
+outreg2  using myreg3.doc, append ctitle((c)) keep (Corrupt) nocons addtext(EF_Clave_escuela, YES, EF_Grado_Secundaria, YES, EF_Año, YES)
+/* REGRESION CON nPartidoDesf como numerica
 *observamos que hay significancia y que el coeficiente es ligeramente menor que cuando solo se usan efectos fijos de clave de la escuela, por lo cual los otros efectos fijos si pueden estar ayudando a hallar un estimador menos sesgado
 *en general vemos que aqui el coeficiente es positivo, significativo, pero su magnitud creo que es baja (0.004)
 
@@ -461,7 +462,7 @@ Absorbed degrees of freedom:
 ----------------------------------------------------------+
 ? = number of redundant parameters may be higher*/
 
-
+*/
 * d) regresion simple de variable dependiente contra independiente principal + controles + efectos fijos
 
 reghdfe prop Corrupt i.nPartidoDesf Auditada CorruptPast HOMI_CAP_MUN log_total2 MismoPartidoG , absorb (clavedelaescuela GradoSecundaria year)
@@ -585,7 +586,7 @@ Absorbed degrees of freedom:
 * AHORA: veamos como quedaria sacandole el efecto fijo de GradoSecundaria y metiendola como variable categorica
 
 reghdfe prop Corrupt i.nPartidoDesf Auditada CorruptPast HOMI_CAP_MUN log_total2 MismoPartidoG i.GradoSecundaria, absorb (clavedelaescuela year)
-outreg2  using myreg3.doc, append ctitle((d)) keep (Corrupt) nocons 
+outreg2  using myreg3.doc, append ctitle((d)) keep (Corrupt) nocons addtext(Partido, YES, Auditado?, YES, Corrupt_past, YES, Homicidio, YES, Ingreso_total, YES, Mismo_Partido, YES, Grado_secundaria, YES, EF_Grado_Secundaria, YES, EF_Año, YES)
 
 /* regresion completa version 2, vemos que da exactamente igual el coeficiente de corrupt
 HDFE Linear regression                            Number of obs   =    100,356

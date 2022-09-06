@@ -6,5 +6,15 @@ Corrupt	0.00134	0.00165	0.00436***	0.00305**
 				
 Observations	102,133	102,133	100,356	100,356
 R-squared	0.000	0.027	0.363	0.366
+Partido		YES		YES
+Auditado?		YES		YES
+Corrupt_past		YES		YES
+Homicidio		YES		YES
+Ingreso_total		YES		YES
+Mismo_Partido		YES		YES
+EF_Grado_Secundaria			YES	YES
+EF_Año			YES	YES
+Grado_secundaria				YES
+EF_Clave_escuela			YES	
 Standard errors in parentheses				
 *** p<0.01, ** p<0.05, * p<0.1				
