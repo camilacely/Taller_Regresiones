@@ -204,7 +204,7 @@ sum PartidoDesf
 sum nPartidoDesf
 
 reg prop Corrupt i.nPartidoDesf Auditada CorruptPast HOMI_CAP_MUN log_total2 MismoPartidoG /* aqui le puse i.nPartidoDesf porque si no, no la toma como categorica sino como numerica*/ 
-outreg2  using myreg3.doc, append ctitle((b)) keep (Corrupt) nocons addtext(Partido, YES, Auditado?, YES, Corrupt_past, YES, Homicidio, YES, Ingreso_total, YES, Mismo_Partido, YES)
+outreg2  using myreg3.doc, append ctitle((b)) keep (Corrupt) nocons addtext(Partido, YES, Auditado?, YES, Corrupt_past, YES, Homicidio, YES, Impuesto_total, YES, Mismo_Partido, YES)
 /* REGRESION CON nPartidoDesf como numerica
 
 Source |       SS           df       MS      Number of obs   =   102,133
@@ -586,7 +586,7 @@ Absorbed degrees of freedom:
 * AHORA: veamos como quedaria sacandole el efecto fijo de GradoSecundaria y metiendola como variable categorica
 
 reghdfe prop Corrupt i.nPartidoDesf Auditada CorruptPast HOMI_CAP_MUN log_total2 MismoPartidoG i.GradoSecundaria, absorb (clavedelaescuela year)
-outreg2  using myreg3.doc, append ctitle((d)) keep (Corrupt) nocons addtext(Partido, YES, Auditado?, YES, Corrupt_past, YES, Homicidio, YES, Ingreso_total, YES, Mismo_Partido, YES, Grado_secundaria, YES, EF_Grado_Secundaria, YES, EF_Año, YES)
+outreg2  using myreg3.doc, append ctitle((d)) keep (Corrupt) nocons addtext(Partido, YES, Auditado?, YES, Corrupt_past, YES, Homicidio, YES, Impuesto_total, YES, Mismo_Partido, YES, Grado_secundaria, YES, EF_Grado_Secundaria, YES, EF_Año, YES)
 
 /* regresion completa version 2, vemos que da exactamente igual el coeficiente de corrupt
 HDFE Linear regression                            Number of obs   =    100,356
