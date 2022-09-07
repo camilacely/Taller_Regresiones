@@ -9,15 +9,13 @@
 
 *Pregunta de investigacion: la corrupcion politica incrementa la incidencia de trampa por parte de los estudiantes?
 
+ssc install ftools
+ssc install reghdfe /*Para instalar paquetes de stata*/
 
 ******************************
 * establecer directorio y ruta  ** varia de acuerdo al pc de cada quien
 
 *cd "C:\Users\Camila Cely\Documents\GitHub\Taller_Regresiones"
-
-ssc install ftools
-ssc install reghdfe /*Para instalar paquetes de stata*/
-
 cd "E:\MAESTRIA UNIANDES\EVALUACION DE IMPACTO\Taller_Regresiones"
 use "corruption.dta"
 
@@ -706,12 +704,6 @@ Absorbed degrees of freedom:
              year |         8           1           7     |
 ----------------------------------------------------------+*/
 
-
-
-**********************
-*HASTA AQUI VA EL CODIGO DEL TALLER COMO TALLER
-
-* A CONTINUACION, TENEMOS QUE SACAR LAS TABLAS CONFORME LO SOLICITAN EN EL TALLER 
 
 
 
